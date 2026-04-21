@@ -1,0 +1,31 @@
+.kpi-box {
+  padding: 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.kpi-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.kpi-icon--accent { background: rgba(237,73,86,0.1); color: var(--red); }
+.kpi-icon--green { background: rgba(0,186,124,0.1); color: var(--green); }
+.kpi-icon--blue { background: rgba(0,149,246,0.1); color: var(--blue); }
+.kpi-icon--gold { background: rgba(131,58,180,0.12); color: #a96cd9; }
+
+.kpi-content { display: flex; flex-direction: column; gap: 3px; }
+
+.kpi-label {
+  font-size: 0.7rem; font-weight: 600; color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+
+.kpi-value { font-size: 1.55rem; font-weight: 800; color: var(--text); line-height: 1; }
+
+.kpi-change { font-size: 0.7rem; font-weight: 500; }
+.kpi-change.positive { color: var(--green); }
+.kpi-change.negative { color: var(--red); }
