@@ -75,7 +75,10 @@ export function AuthProvider({ children }) {
     };
   };
 
-  const logout = () => setAuthUser(null);
+  const logout = () => {
+    setAuthUser(null);
+    window.history.replaceState(null, "", "/");
+  };
 
   const value = useMemo(
     () => ({
