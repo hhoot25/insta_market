@@ -42,7 +42,7 @@
 }
 
 .upload-zone.small:hover {
-  border-color: var(--accent);
+  border-color: var(--highlight-border);
 }
 
 .upload-zone.small p {

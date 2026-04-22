@@ -4,15 +4,14 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import MetaLayout from "./components/MetaLayout";
 import Login from "./pages/Login";
-import CreateAccount from "./pages/CreateAccount";
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import Dashboard from "./pages/Dashboard";
 import Listings from "./pages/Listings";
 import CreateListing from "./pages/CreateListing";
 import Cart from "./pages/Cart";
-import Messages from "./pages/Messages";
 import Support from "./pages/Support";
+import Wishlist from "./pages/Wishlist";
 import Profile from "./pages/Profile";
 import "./App.css";
 
@@ -23,14 +22,13 @@ function AppLayout() {
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/buyer" element={<Navigate to="/" replace />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/listings" element={<Listings />} />
           <Route path="/create" element={<CreateListing />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/messages" element={<Messages />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Home />} />
         </Routes>
@@ -42,16 +40,7 @@ function AppLayout() {
 function AuthGate() {
   const { authUser } = useAuth();
 
-  if (!authUser) {
-  return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<CreateAccount />} />
-      <Route path="*" element={<Login />} />
-    </Routes>
-  );
-}
-
+  if (!authUser) return <Login />;
   if (authUser.isMeta) {
     return (
       <Routes>
@@ -60,7 +49,6 @@ function AuthGate() {
       </Routes>
     );
   }
-
   return <AppLayout />;
 }
 

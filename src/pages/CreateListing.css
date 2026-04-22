@@ -34,8 +34,8 @@
 }
 
 .upload-zone:hover {
-  border-color: var(--accent);
-  background: rgba(255, 56, 92, 0.03);
+  border-color: var(--highlight-border);
+  background: rgba(255, 223, 158, 0.04);
 }
 
 .upload-zone p {
@@ -177,9 +177,9 @@
 }
 
 .condition-pill.active {
-  background: rgba(255, 56, 92, 0.1);
-  border-color: var(--accent);
-  color: var(--accent);
+  background: var(--highlight);
+  border-color: var(--highlight-border);
+  color: var(--text);
 }
 
 /* Actions */
