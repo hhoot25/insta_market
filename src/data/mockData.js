@@ -375,19 +375,19 @@ export const messages = {
 
 export const analyticsData = {
   weekly: [
-    { day: "Mon", views: 210, saves: 34, revenue: 285 },
-    { day: "Tue", views: 340, saves: 56, revenue: 0 },
-    { day: "Wed", views: 280, saves: 41, revenue: 890 },
-    { day: "Thu", views: 520, saves: 89, revenue: 1650 },
-    { day: "Fri", views: 680, saves: 112, revenue: 320 },
-    { day: "Sat", views: 890, saves: 145, revenue: 485 },
-    { day: "Sun", views: 760, saves: 128, revenue: 0 },
+    { day: "Mon", views: 210, saves: 34, revenue: 68  },
+    { day: "Tue", views: 340, saves: 56, revenue: 0   },
+    { day: "Wed", views: 280, saves: 41, revenue: 145 },
+    { day: "Thu", views: 520, saves: 89, revenue: 285 },
+    { day: "Fri", views: 680, saves: 112, revenue: 98 },
+    { day: "Sat", views: 890, saves: 145, revenue: 175 },
+    { day: "Sun", views: 760, saves: 128, revenue: 0  },
   ],
   totals: {
     views: 8340,
     saves: 1234,
-    revenue: 12480,
-    orders: 23,
+    revenue: 1847,
+    orders: 9,
   },
 };
 

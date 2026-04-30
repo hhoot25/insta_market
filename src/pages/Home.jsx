@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Search, SlidersHorizontal, Flame, TrendingUp } from "lucide-react";
+import { Search, SlidersHorizontal, Flame, Store  } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { categories } from "../data/mockData";

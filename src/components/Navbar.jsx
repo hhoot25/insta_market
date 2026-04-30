@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
-  Home, ShoppingCart, TrendingUp,
+  Home, ShoppingCart, Store,
   PlusSquare, Settings, LogOut, Search, Heart
 } from "lucide-react";
 import { useApp } from "../context/AppContext";
@@ -10,7 +10,7 @@ import "./Navbar.css";
 
 const navItems = [
   { to: "/", icon: Home, label: "Home" },
-  { to: "/dashboard", icon: TrendingUp, label: "Analytics" },
+  { to: "/dashboard", icon: Store, label: "Seller Hub" },
   { to: "/wishlist", icon: Heart, label: "Wishlist" },
   { to: "/cart", icon: ShoppingCart, label: "Cart" },
   { to: "/create", icon: PlusSquare, label: "Sell" },
