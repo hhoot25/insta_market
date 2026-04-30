@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
-  Home, ShoppingCart, MessageCircle, TrendingUp,
-  PlusSquare, Settings, LogOut, Search
+  Home, ShoppingCart, TrendingUp,
+  PlusSquare, Settings, LogOut, Search, Heart
 } from "lucide-react";
 import { useApp } from "../context/AppContext";
 import { useAuth } from "../context/AuthContext";
 import "./Navbar.css";
 
 const navItems = [
-  { to: "/", icon: Home, label: "Buyer Page" },
-  { to: "/dashboard", icon: TrendingUp, label: "Seller Page" },
-  { to: "/messages", icon: MessageCircle, label: "Messages" },
+  { to: "/", icon: Home, label: "Home" },
+  { to: "/dashboard", icon: TrendingUp, label: "Analytics" },
+  { to: "/wishlist", icon: Heart, label: "Wishlist" },
   { to: "/cart", icon: ShoppingCart, label: "Cart" },
   { to: "/create", icon: PlusSquare, label: "Sell" },
 ];
@@ -19,7 +19,7 @@ const navItems = [
 export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { cart, user } = useApp();
+  const { cart, user, wishlist } = useApp();
   const { logout } = useAuth();
   const [query, setQuery] = useState("");
 
@@ -47,7 +47,7 @@ export default function Navbar() {
               <Search size={14} className="search-icon" />
               <input
                 type="text"
-                placeholder="Search marketplace"
+                placeholder="Search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="sidebar-search-input"
@@ -66,6 +66,9 @@ export default function Navbar() {
                   {to === "/cart" && cart.length > 0 && (
                     <span className="nav-badge">{cart.length}</span>
                   )}
+                {to === "/wishlist" && wishlist && wishlist.length > 0 && (
+                    <span className="nav-badge">{wishlist.length}</span>
+                  )}
                 </div>
                 <span>{label}</span>
               </Link>
@@ -74,32 +77,21 @@ export default function Navbar() {
         </div>
 
         <div className="sidebar-bottom">
-          <Link
-            to="/support"
-            className={`nav-item ${location.pathname === "/support" ? "active" : ""}`}
-          >
+          <Link to="/support" className={`nav-item ${location.pathname === '/support' ? 'active' : ''}`}>
             <Settings size={22} />
             <span>Support</span>
           </Link>
-
-          <Link to="/dashboard" className="sidebar-user" title="Go to Seller Page">
+          <Link to="/profile" className="sidebar-user">
             <img src={user.avatar} alt={user.name} className="user-avatar" />
             <div className="user-info">
               <span className="user-name">{user.name}</span>
               <span className="user-handle">{user.username}</span>
             </div>
           </Link>
-
           <button
             className="nav-item"
             onClick={logout}
-            style={{
-              width: "100%",
-              textAlign: "left",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-            }}
+            style={{ width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer" }}
           >
             <LogOut size={22} />
             <span>Log out</span>
@@ -116,6 +108,9 @@ export default function Navbar() {
                 <Icon size={24} />
                 {to === "/cart" && cart.length > 0 && (
                   <span className="nav-badge">{cart.length}</span>
+                )}
+                {to === "/wishlist" && wishlist && wishlist.length > 0 && (
+                  <span className="nav-badge">{wishlist.length}</span>
                 )}
               </div>
             </Link>

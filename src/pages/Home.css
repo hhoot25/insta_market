@@ -1,15 +1,15 @@
 .home-hero {
   text-align: center;
-  padding: 36px 0 28px;
+  padding: 48px 0 36px;
 }
 
 .home-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3.1rem);
+  font-size: clamp(2rem, 5vw, 3.2rem);
   font-weight: 700;
   color: var(--text);
   margin-bottom: 10px;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
 .home-title span {
@@ -20,26 +20,25 @@
 .home-subtitle {
   font-size: 1rem;
   color: var(--text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .home-search {
   display: flex;
   align-items: center;
   gap: 8px;
-  max-width: 640px;
+  max-width: 560px;
   margin: 0 auto;
   background: var(--bg-card);
   border: 1.5px solid var(--border-light);
-  border-radius: 999px;
-  padding: 6px 6px 6px 18px;
+  border-radius: 99px;
+  padding: 6px 6px 6px 20px;
   position: relative;
-  transition: border-color var(--transition), box-shadow var(--transition);
+  transition: border-color var(--transition);
 }
 
 .home-search:focus-within {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(0, 149, 246, 0.08);
+  border-color: var(--highlight-border);
 }
 
 .home-search-icon {
@@ -60,10 +59,6 @@
   color: var(--text-muted);
 }
 
-.home-search-input:focus {
-  outline: none;
-}
-
 .search-clear {
   background: none;
   border: none;
@@ -74,18 +69,18 @@
 }
 
 .search-btn {
-  border-radius: 999px !important;
+  border-radius: 99px !important;
   padding: 10px 22px !important;
   font-size: 0.85rem !important;
 }
 
-/* Search history pills */
+/* Category pills */
 .category-scroll {
   display: flex;
   gap: 8px;
   overflow-x: auto;
   padding-bottom: 4px;
-  margin-bottom: 18px;
+  margin-bottom: 24px;
   scrollbar-width: none;
 }
 
@@ -97,9 +92,9 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: 0.84rem;
+  padding: 8px 18px;
+  border-radius: 99px;
+  font-size: 0.85rem;
   font-weight: 500;
   background: var(--bg-card);
   border: 1.5px solid var(--border);
@@ -113,51 +108,12 @@
 .cat-pill:hover {
   border-color: var(--border-light);
   color: var(--text);
-  transform: translateY(-1px);
 }
 
 .cat-pill.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: white;
-}
-
-/* Buyer page split layout */
-.buyer-layout {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 24px;
-  align-items: start;
-}
-
-.buyer-sidebar {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 18px;
-  position: sticky;
-  top: 16px;
-}
-
-.buyer-sidebar h3 {
-  margin-bottom: 14px;
-  font-size: 1rem;
+  background: var(--highlight);
+  border-color: var(--highlight-border);
   color: var(--text);
-}
-
-.buyer-sidebar-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.buyer-sidebar .cat-pill {
-  justify-content: flex-start;
-  width: 100%;
-}
-
-.buyer-results {
-  min-width: 0;
 }
 
 /* Results header */
@@ -165,8 +121,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
-  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .results-count {
@@ -175,7 +130,6 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-wrap: wrap;
 }
 
 .results-count strong {
@@ -202,16 +156,18 @@
   background-position: right 10px center;
 }
 
-.sort-select:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-
 /* Product grid */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
 }
 
 /* Empty state */
@@ -223,53 +179,4 @@
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-}
-
-.empty-state p {
-  font-size: 1rem;
-  color: var(--text);
-}
-
-@media (max-width: 980px) {
-  .buyer-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .buyer-sidebar {
-    position: static;
-    top: auto;
-  }
-
-  .buyer-sidebar-list {
-    flex-direction: row;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-
-  .buyer-sidebar .cat-pill {
-    width: auto;
-  }
-}
-
-@media (max-width: 640px) {
-  .home-hero {
-    padding: 22px 0 18px;
-  }
-
-  .home-search {
-    padding-left: 14px;
-  }
-
-  .results-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
 }

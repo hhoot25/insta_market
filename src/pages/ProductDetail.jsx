@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
-  ChevronLeft, ChevronRight, Heart, ShoppingCart, MessageCircle,
-  Zap, Eye, Bookmark, Share2, CheckCircle2, ArrowLeft
+  ChevronLeft, ChevronRight, Heart, ShoppingCart,
+  Zap, Eye, Bookmark, CheckCircle2, ArrowLeft
 } from "lucide-react";
 import { useApp } from "../context/AppContext";
 import { users } from "../data/mockData";
@@ -176,9 +176,7 @@ export default function ProductDetail() {
                 <ShoppingCart size={16} />
                 {inCart ? "View Cart" : "Add to Cart"}
               </button>
-              <Link to="/messages" className="btn btn-ghost action-btn">
-                <MessageCircle size={16} /> Message
-              </Link>
+
             </div>
           )}
 

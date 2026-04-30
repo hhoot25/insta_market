@@ -164,7 +164,7 @@
 }
 
 .thumb.active {
-  border-color: var(--accent);
+  border-color: var(--highlight-border);
 }
 
 /* Info */
@@ -260,8 +260,8 @@
 }
 
 .tag:hover {
-  color: var(--accent);
-  border-color: var(--accent-glow);
+  color: var(--highlight-solid);
+  border-color: var(--highlight-border);
 }
 
 .detail-actions {

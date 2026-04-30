@@ -5,7 +5,8 @@ const AppContext = createContext();
 
 export function AppProvider({ children }) {
   const [cart, setCart] = useState([]);
-  const [favorites, setFavorites] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
+  const favorites = wishlist; // alias
   const [listings, setListings] = useState(initialListings);
   const [user] = useState(currentUser);
 
@@ -21,10 +22,13 @@ export function AppProvider({ children }) {
   };
 
   const toggleFavorite = (id) => {
-    setFavorites((prev) =>
+    setWishlist((prev) =>
       prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]
     );
   };
+
+  const addToWishlist = (id) => setWishlist(prev => prev.includes(id) ? prev : [...prev, id]);
+  const removeFromWishlist = (id) => setWishlist(prev => prev.filter(f => f !== id));
 
   const addListing = (listing) => {
     const newListing = {
@@ -56,12 +60,15 @@ export function AppProvider({ children }) {
       value={{
         cart,
         cartTotal,
+        wishlist,
         favorites,
         listings,
         user,
         addToCart,
         removeFromCart,
         toggleFavorite,
+        addToWishlist,
+        removeFromWishlist,
         addListing,
         updateListing,
         deleteListing,

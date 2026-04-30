@@ -16,9 +16,12 @@
   --ig-1: #833ab4;
   --ig-2: #fd1d1d;
   --ig-3: #fcb045;
-  --accent: #0095f6;
+  --accent: #e56969;
   --accent-hover: #1aa3ff;
   --accent-glow: rgba(0, 149, 246, 0.25);
+  --highlight: rgba(255, 223, 158, 0.5);
+  --highlight-solid: #ffdf9e;
+  --highlight-border: rgba(255, 223, 158, 0.65);
 
   --ig-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
   --ig-gradient-btn: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
@@ -81,7 +84,7 @@ img { max-width: 100%; display: block; }
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-label { font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.03em; text-transform: uppercase; }
 .form-input { background: var(--bg-input); border: 1px solid var(--border-light); border-radius: var(--radius-sm); color: var(--text); padding: 11px 14px; font-size: 0.9rem; transition: border-color var(--transition); width: 100%; }
-.form-input:focus { border-color: var(--accent); }
+.form-input:focus { border-color: var(--highlight-border); }
 .form-input::placeholder { color: var(--text-muted); }
 textarea.form-input { resize: vertical; min-height: 90px; }
 select.form-input { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }

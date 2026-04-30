@@ -167,7 +167,7 @@
 }
 
 .profile-tab:hover { color: var(--text); }
-.profile-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.profile-tab.active { color: var(--highlight-solid); border-bottom-color: var(--highlight-solid); }
 
 .product-grid {
   display: grid;
