@@ -46,8 +46,9 @@ export default function TOS() {
   const handleScroll = () => {
     const el = scrollRef.current;
     if (!el) return;
-    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 48;
-    if (atBottom) setScrolledToBottom(true);
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 48) {
+      setScrolledToBottom(true);
+    }
   };
 
   const canAccept = scrolledToBottom && checked;
@@ -75,16 +76,19 @@ export default function TOS() {
             </div>
           </div>
           <h1 className="tos-title">Buyer Terms of Service</h1>
-          <p className="tos-subtitle">Read through all terms, then check the box below to continue. Last updated January 15, 2025.</p>
+          <p className="tos-subtitle">
+            One last step — read through the terms, then check the box below to activate your account.
+            Last updated January 15, 2025.
+          </p>
         </div>
 
-        {/* Scrollable content — grows to fill available space */}
+        {/* Scrollable body — flex: 1 + min-height: 0 is the key to making this work */}
         <div className="tos-body" ref={scrollRef} onScroll={handleScroll}>
           <p className="tos-intro">
-            Welcome to InstaMarket. These Buyer Terms of Service govern your access to and use of InstaMarket as a buyer. By making a purchase or browsing listings you agree to be bound by these terms, Meta's Community Standards, and the Instagram Terms of Use. If you do not agree, you may not use InstaMarket.
+            Welcome to InstaMarket. These Buyer Terms of Service govern your access to and use of InstaMarket. By creating an account and making purchases you agree to be bound by these terms, Meta's Community Standards, and the Instagram Terms of Use. If you do not agree, you may not use InstaMarket.
           </p>
 
-          {SECTIONS.map((s) => (
+          {SECTIONS.map(s => (
             <div key={s.title} className="tos-section">
               <h3>{s.title}</h3>
               <p>{s.body}</p>
@@ -92,7 +96,10 @@ export default function TOS() {
           ))}
 
           <div className="tos-end-block">
-            <p>These Terms constitute the entire agreement between you and Meta regarding your use of InstaMarket as a buyer. For questions contact <strong>support-instamarket@meta.com</strong>.</p>
+            <p>
+              These Terms constitute the entire agreement between you and Meta regarding your use of InstaMarket as a buyer.
+              For questions contact <strong>support-instamarket@meta.com</strong>.
+            </p>
           </div>
         </div>
 
@@ -119,7 +126,7 @@ export default function TOS() {
 
           <div className="tos-buttons">
             <button className="tos-decline-btn" onClick={logout}>
-              Decline &amp; Sign Out
+              ← Go Back
             </button>
             <button
               className={`tos-accept-btn ${canAccept ? "tos-accept-ready" : ""}`}

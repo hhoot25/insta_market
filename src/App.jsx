@@ -22,16 +22,16 @@ function AppLayout() {
       <Navbar />
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/listings" element={<Listings />} />
-          <Route path="/create" element={<CreateListing />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/support" element={<Support />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<Home />} />
+          <Route path="/"               element={<Home />} />
+          <Route path="/product/:id"    element={<ProductDetail />} />
+          <Route path="/dashboard"      element={<Dashboard />} />
+          <Route path="/listings"       element={<Listings />} />
+          <Route path="/create"         element={<CreateListing />} />
+          <Route path="/cart"           element={<Cart />} />
+          <Route path="/support"        element={<Support />} />
+          <Route path="/wishlist"       element={<Wishlist />} />
+          <Route path="/profile"        element={<Profile />} />
+          <Route path="*"               element={<Home />} />
         </Routes>
       </main>
     </div>
@@ -41,23 +41,23 @@ function AppLayout() {
 function AuthGate() {
   const { authUser, tosAccepted } = useAuth();
 
-  // Not logged in → show login
+  // Not logged in → show login / signup screen
   if (!authUser) return <Login />;
 
-  // Meta employee → internal portal
+  // Meta employee → skip TOS entirely, go straight to internal portal
   if (authUser.isMeta) {
     return (
       <Routes>
         <Route path="/meta/*" element={<MetaLayout />} />
-        <Route path="*" element={<Navigate to="/meta/fraud" replace />} />
+        <Route path="*"       element={<Navigate to="/meta/fraud" replace />} />
       </Routes>
     );
   }
 
-  // Logged in but TOS not yet accepted → show TOS
+  // New signup → TOS not yet accepted → show TOS screen
   if (!tosAccepted) return <TOS />;
 
-  // Regular user → marketplace
+  // Returning user who accepted TOS → marketplace
   return <AppLayout />;
 }
 

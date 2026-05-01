@@ -6,6 +6,7 @@ export function AuthProvider({ children }) {
   const [authUser, setAuthUser] = useState(null);
   const [tosAccepted, setTosAccepted] = useState(false);
 
+  // Login — existing users skip TOS
   const login = (email, password) => {
     const isMeta = email.toLowerCase().endsWith("@meta.com");
     const user = {
@@ -17,7 +18,20 @@ export function AuthProvider({ children }) {
       role: isMeta ? "meta_employee" : "user",
     };
     setAuthUser(user);
-    setTosAccepted(false); // always show TOS on fresh login
+    setTosAccepted(true); // existing users already accepted TOS
+    return user;
+  };
+
+  // Signup — new users must accept TOS before continuing
+  const signup = (name, email, password) => {
+    const user = {
+      email,
+      isMeta: false,
+      name: name.trim() || email.split("@")[0],
+      role: "user",
+    };
+    setAuthUser(user);
+    setTosAccepted(false); // force TOS screen after signup
     return user;
   };
 
@@ -30,7 +44,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ authUser, tosAccepted, login, acceptTOS, logout }}>
+    <AuthContext.Provider value={{ authUser, tosAccepted, login, signup, acceptTOS, logout }}>
       {children}
     </AuthContext.Provider>
   );
