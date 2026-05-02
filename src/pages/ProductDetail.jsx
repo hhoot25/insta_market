@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   ChevronLeft, ChevronRight, Heart, ShoppingCart,
-  Zap, Eye, Bookmark, CheckCircle2, ArrowLeft
+  Zap, Eye, Bookmark, CheckCircle2, ArrowLeft, MessageCircle
 } from "lucide-react";
 import { useApp } from "../context/AppContext";
 import { users } from "../data/mockData";
@@ -15,6 +15,7 @@ export default function ProductDetail() {
   const { listings, cart, addToCart, favorites, toggleFavorite } = useApp();
   const [imgIdx, setImgIdx] = useState(0);
   const [toast, setToast] = useState(null);
+  const [msgToast, setMsgToast] = useState(false);
 
   const listing = listings.find((l) => l.id === id);
   if (!listing) {
@@ -31,11 +32,11 @@ export default function ProductDetail() {
   }
 
   const seller = users.find((u) => u.id === listing.sellerId);
-  const isFav = favorites.includes(listing.id);
+  const isFav  = favorites.includes(listing.id);
   const inCart = cart.some((i) => i.id === listing.id);
 
-  const showToast = (msg, type = "success") => {
-    setToast({ msg, type });
+  const showToast = (msg) => {
+    setToast(msg);
     setTimeout(() => setToast(null), 2500);
   };
 
@@ -53,12 +54,17 @@ export default function ProductDetail() {
     navigate("/cart");
   };
 
+  const handleMessage = () => {
+    setMsgToast(true);
+    setTimeout(() => setMsgToast(false), 2800);
+  };
+
   const conditionClass = {
-    "New": "badge-new",
-    "Like New": "badge-like-new",
+    "New":       "badge-new",
+    "Like New":  "badge-like-new",
     "Excellent": "badge-like-new",
     "Very Good": "badge-good",
-    "Good": "badge-good",
+    "Good":      "badge-good",
   }[listing.condition] || "badge-new";
 
   return (
@@ -68,7 +74,8 @@ export default function ProductDetail() {
       </button>
 
       <div className="product-detail-layout">
-        {/* Image Section */}
+
+        {/* ── Images ── */}
         <div className="detail-images">
           <div className="main-image-wrap">
             <img
@@ -87,14 +94,14 @@ export default function ProductDetail() {
               <>
                 <button
                   className="img-nav prev"
-                  onClick={() => setImgIdx((i) => Math.max(0, i - 1))}
+                  onClick={() => setImgIdx(i => Math.max(0, i - 1))}
                   disabled={imgIdx === 0}
                 >
                   <ChevronLeft size={20} />
                 </button>
                 <button
                   className="img-nav next"
-                  onClick={() => setImgIdx((i) => Math.min(listing.images.length - 1, i + 1))}
+                  onClick={() => setImgIdx(i => Math.min(listing.images.length - 1, i + 1))}
                   disabled={imgIdx === listing.images.length - 1}
                 >
                   <ChevronRight size={20} />
@@ -111,6 +118,7 @@ export default function ProductDetail() {
               ))}
             </div>
           </div>
+
           {/* Thumbnails */}
           <div className="thumbnails">
             {listing.images.map((img, i) => (
@@ -125,10 +133,10 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* Info Section */}
+        {/* ── Info ── */}
         <div className="detail-info">
           <div className="detail-category">
-            {listing.category} • {listing.listedAt}
+            {listing.category} · {listing.listedAt}
           </div>
 
           <h1 className="detail-title">{listing.title}</h1>
@@ -157,26 +165,25 @@ export default function ProductDetail() {
 
           {listing.tags.length > 0 && (
             <div className="detail-tags">
-              {listing.tags.map((tag) => (
+              {listing.tags.map(tag => (
                 <span key={tag} className="tag">#{tag}</span>
               ))}
             </div>
           )}
 
-          {/* Action Buttons */}
+          {/* Action buttons */}
           {!listing.sold && (
             <div className="detail-actions">
               <button className="btn btn-primary action-btn" onClick={handleBuyNow}>
                 <Zap size={16} /> Buy Now
               </button>
-              <button
-                className={`btn ${inCart ? "btn-secondary" : "btn-secondary"} action-btn`}
-                onClick={handleAddToCart}
-              >
+              <button className="btn btn-secondary action-btn" onClick={handleAddToCart}>
                 <ShoppingCart size={16} />
                 {inCart ? "View Cart" : "Add to Cart"}
               </button>
-
+              <button className="btn btn-ghost action-btn" onClick={handleMessage}>
+                <MessageCircle size={16} /> Message
+              </button>
             </div>
           )}
 
@@ -187,15 +194,23 @@ export default function ProductDetail() {
             </div>
           )}
 
-          {/* Seller Panel */}
           <SellerPanel seller={seller} />
         </div>
       </div>
 
+      {/* Cart toast */}
       {toast && (
-        <div className={`toast ${toast.type}`}>
+        <div className="toast">
           <CheckCircle2 size={16} style={{ color: "var(--green)" }} />
-          {toast.msg}
+          {toast}
+        </div>
+      )}
+
+      {/* Messaging coming soon toast */}
+      {msgToast && (
+        <div className="toast">
+          <MessageCircle size={16} style={{ color: "var(--blue)" }} />
+          Messaging coming soon!
         </div>
       )}
     </div>
