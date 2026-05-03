@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   ChevronLeft, ChevronRight, Heart, ShoppingCart,
   Zap, Eye, Bookmark, CheckCircle2, ArrowLeft, MessageCircle
@@ -41,12 +41,8 @@ export default function ProductDetail() {
   };
 
   const handleAddToCart = () => {
-    if (!inCart) {
-      addToCart(listing);
-      showToast("Added to cart!");
-    } else {
-      navigate("/cart");
-    }
+    if (!inCart) { addToCart(listing); showToast("Added to cart!"); }
+    else navigate("/cart");
   };
 
   const handleBuyNow = () => {
@@ -78,11 +74,7 @@ export default function ProductDetail() {
         {/* ── Images ── */}
         <div className="detail-images">
           <div className="main-image-wrap">
-            <img
-              src={listing.images[imgIdx]}
-              alt={listing.title}
-              className="main-image"
-            />
+            <img src={listing.images[imgIdx]} alt={listing.title} className="main-image" />
             {listing.sold && <div className="sold-badge-large">Sold</div>}
             <button
               className={`fav-btn-large ${isFav ? "active" : ""}`}
@@ -92,41 +84,23 @@ export default function ProductDetail() {
             </button>
             {listing.images.length > 1 && (
               <>
-                <button
-                  className="img-nav prev"
-                  onClick={() => setImgIdx(i => Math.max(0, i - 1))}
-                  disabled={imgIdx === 0}
-                >
+                <button className="img-nav prev" onClick={() => setImgIdx(i => Math.max(0, i - 1))} disabled={imgIdx === 0}>
                   <ChevronLeft size={20} />
                 </button>
-                <button
-                  className="img-nav next"
-                  onClick={() => setImgIdx(i => Math.min(listing.images.length - 1, i + 1))}
-                  disabled={imgIdx === listing.images.length - 1}
-                >
+                <button className="img-nav next" onClick={() => setImgIdx(i => Math.min(listing.images.length - 1, i + 1))} disabled={imgIdx === listing.images.length - 1}>
                   <ChevronRight size={20} />
                 </button>
               </>
             )}
             <div className="img-dots">
               {listing.images.map((_, i) => (
-                <button
-                  key={i}
-                  className={`dot ${i === imgIdx ? "active" : ""}`}
-                  onClick={() => setImgIdx(i)}
-                />
+                <button key={i} className={`dot ${i === imgIdx ? "active" : ""}`} onClick={() => setImgIdx(i)} />
               ))}
             </div>
           </div>
-
-          {/* Thumbnails */}
           <div className="thumbnails">
             {listing.images.map((img, i) => (
-              <button
-                key={i}
-                className={`thumb ${i === imgIdx ? "active" : ""}`}
-                onClick={() => setImgIdx(i)}
-              >
+              <button key={i} className={`thumb ${i === imgIdx ? "active" : ""}`} onClick={() => setImgIdx(i)}>
                 <img src={img} alt={`View ${i + 1}`} />
               </button>
             ))}
@@ -153,8 +127,16 @@ export default function ProductDetail() {
             )}
           </div>
 
+          {/* Condition + sustainability badge */}
           <div className="detail-meta">
             <span className={`badge ${conditionClass}`}>{listing.condition}</span>
+
+            {listing.plasticFree && (
+              <span className="badge badge-eco-detail" title="This seller uses plastic-free packaging">
+                🌿 Plastic-Free Packaging
+              </span>
+            )}
+
             <div className="meta-stats">
               <span><Eye size={13} /> {listing.views.toLocaleString()} views</span>
               <span><Bookmark size={13} /> {listing.saves} saves</span>
@@ -171,7 +153,6 @@ export default function ProductDetail() {
             </div>
           )}
 
-          {/* Action buttons */}
           {!listing.sold && (
             <div className="detail-actions">
               <button className="btn btn-primary action-btn" onClick={handleBuyNow}>
@@ -198,19 +179,14 @@ export default function ProductDetail() {
         </div>
       </div>
 
-      {/* Cart toast */}
       {toast && (
         <div className="toast">
-          <CheckCircle2 size={16} style={{ color: "var(--green)" }} />
-          {toast}
+          <CheckCircle2 size={16} style={{ color: "var(--green)" }} /> {toast}
         </div>
       )}
-
-      {/* Messaging coming soon toast */}
       {msgToast && (
         <div className="toast">
-          <MessageCircle size={16} style={{ color: "var(--blue)" }} />
-          Messaging coming soon!
+          <MessageCircle size={16} style={{ color: "var(--blue)" }} /> Messaging coming soon!
         </div>
       )}
     </div>

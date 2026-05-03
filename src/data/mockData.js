@@ -61,14 +61,14 @@ export const fallbackListingImage =
   "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=80";
 
 export const categories = [
-  { id: "all", label: "All", emoji: "✨" },
-  { id: "fashion", label: "Fashion", emoji: "👗" },
-  { id: "sneakers", label: "Sneakers", emoji: "👟" },
+  { id: "all",         label: "All",         emoji: "✨" },
+  { id: "fashion",     label: "Fashion",     emoji: "👗" },
+  { id: "sneakers",    label: "Sneakers",    emoji: "👟" },
   { id: "electronics", label: "Electronics", emoji: "📱" },
-  { id: "jewelry", label: "Jewelry", emoji: "💎" },
-  { id: "home", label: "Home", emoji: "🏡" },
-  { id: "art", label: "Art", emoji: "🎨" },
-  { id: "vintage", label: "Vintage", emoji: "📷" },
+  { id: "jewelry",     label: "Jewelry",     emoji: "💎" },
+  { id: "home",        label: "Home",        emoji: "🏡" },
+  { id: "art",         label: "Art",         emoji: "🎨" },
+  { id: "vintage",     label: "Vintage",     emoji: "📷" },
 ];
 
 export const listings = [
@@ -80,6 +80,7 @@ export const listings = [
     condition: "Excellent",
     category: "fashion",
     sellerId: "u1",
+    plasticFree: true,
     images: [
       "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80",
       "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80",
@@ -101,6 +102,7 @@ export const listings = [
     condition: "New",
     category: "sneakers",
     sellerId: "u2",
+    plasticFree: false,
     images: [
       "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
       "https://images.unsplash.com/photo-1607522370275-f14206abe5d3?w=800&q=80",
@@ -122,6 +124,7 @@ export const listings = [
     condition: "New",
     category: "jewelry",
     sellerId: "u3",
+    plasticFree: true,
     images: [
       "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80",
       "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80",
@@ -143,6 +146,7 @@ export const listings = [
     condition: "Like New",
     category: "electronics",
     sellerId: "u4",
+    plasticFree: false,
     images: [
       "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&q=80",
       "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800&q=80",
@@ -164,6 +168,7 @@ export const listings = [
     condition: "Good",
     category: "fashion",
     sellerId: "u1",
+    plasticFree: true,
     images: [
       "https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=800&q=80",
       "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80",
@@ -185,6 +190,7 @@ export const listings = [
     condition: "New",
     category: "sneakers",
     sellerId: "u2",
+    plasticFree: false,
     images: [
       "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800&q=80",
       "https://images.unsplash.com/photo-1539185441755-769473a23570?w=800&q=80",
@@ -206,6 +212,7 @@ export const listings = [
     condition: "New",
     category: "jewelry",
     sellerId: "u3",
+    plasticFree: true,
     images: [
       "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&q=80",
       "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80",
@@ -227,6 +234,7 @@ export const listings = [
     condition: "Like New",
     category: "electronics",
     sellerId: "u4",
+    plasticFree: false,
     images: [
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
       "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800&q=80",
@@ -248,6 +256,7 @@ export const listings = [
     condition: "Very Good",
     category: "fashion",
     sellerId: "u1",
+    plasticFree: true,
     images: [
       "https://images.unsplash.com/photo-1591348278863-a8fb3887e2aa?w=800&q=80",
       "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80",
@@ -269,6 +278,7 @@ export const listings = [
     condition: "Good",
     category: "vintage",
     sellerId: "u4",
+    plasticFree: false,
     images: [
       "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80",
       "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
@@ -290,6 +300,7 @@ export const listings = [
     condition: "New",
     category: "art",
     sellerId: "u3",
+    plasticFree: true,
     images: [
       "https://images.unsplash.com/photo-1541367777708-7905fe3296c0?w=800&q=80",
       "https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=800&q=80",
@@ -311,6 +322,7 @@ export const listings = [
     condition: "New",
     category: "sneakers",
     sellerId: "u2",
+    plasticFree: false,
     images: [
       "https://images.unsplash.com/photo-1556906781-9a412961a28c?w=800&q=80",
       "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=800&q=80",
@@ -328,48 +340,12 @@ export const listings = [
 
 export const messages = {
   u1_u2: [
-    {
-      id: "m1",
-      senderId: "u2",
-      text: "Hey! Is the Chanel bag still available?",
-      time: "10:32 AM",
-      read: true,
-    },
-    {
-      id: "m2",
-      senderId: "u1",
-      text: "Yes it is! Just relisted it this morning 😊",
-      time: "10:35 AM",
-      read: true,
-    },
-    {
-      id: "m3",
-      senderId: "u2",
-      text: "Amazing. Would you take $2,900 for it?",
-      time: "10:36 AM",
-      read: true,
-    },
-    {
-      id: "m4",
-      senderId: "u1",
-      text: "Best I can do is $3,050 since I just had it authenticated again last week.",
-      time: "10:40 AM",
-      read: true,
-    },
-    {
-      id: "m5",
-      senderId: "u2",
-      text: "Deal! How do I buy it through the app?",
-      time: "10:42 AM",
-      read: true,
-    },
-    {
-      id: "m6",
-      senderId: "u1",
-      text: "Just hit Buy Now on the listing and it'll walk you through checkout. I ship same day!",
-      time: "10:43 AM",
-      read: false,
-    },
+    { id: "m1", senderId: "u2", text: "Hey! Is the Chanel bag still available?", time: "10:32 AM", read: true },
+    { id: "m2", senderId: "u1", text: "Yes it is! Just relisted it this morning 😊", time: "10:35 AM", read: true },
+    { id: "m3", senderId: "u2", text: "Amazing. Would you take $2,900 for it?", time: "10:36 AM", read: true },
+    { id: "m4", senderId: "u1", text: "Best I can do is $3,050 since I just had it authenticated again last week.", time: "10:40 AM", read: true },
+    { id: "m5", senderId: "u2", text: "Deal! How do I buy it through the app?", time: "10:42 AM", read: true },
+    { id: "m6", senderId: "u1", text: "Just hit Buy Now on the listing and it'll walk you through checkout. I ship same day!", time: "10:43 AM", read: false },
   ],
 };
 

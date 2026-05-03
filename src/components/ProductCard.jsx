@@ -5,26 +5,42 @@ import { users } from "../data/mockData";
 import "./ProductCard.css";
 
 export default function ProductCard({ listing }) {
-  const { favorites, toggleFavorite, addToCart } = useApp();
-  const isFav = favorites.includes(listing.id);
-  const seller = users.find((u) => u.id === listing.sellerId);
+  const { favorites, toggleFavorite } = useApp();
+  const isFav   = favorites.includes(listing.id);
+  const seller  = users.find((u) => u.id === listing.sellerId);
 
   const conditionClass = {
-    "New": "badge-new",
-    "Like New": "badge-like-new",
+    "New":       "badge-new",
+    "Like New":  "badge-like-new",
     "Excellent": "badge-like-new",
     "Very Good": "badge-good",
-    "Good": "badge-good",
+    "Good":      "badge-good",
   }[listing.condition] || "badge-new";
 
   return (
     <div className={`product-card card fade-in ${listing.sold ? "sold" : ""}`}>
       <Link to={`/product/${listing.id}`} className="product-image-wrap">
-        <img src={listing.images[0]} alt={listing.title} className="product-img" loading="lazy" />
-        {listing.sold && <div className="sold-overlay"><span>Sold</span></div>}
+        <img
+          src={listing.images[0]}
+          alt={listing.title}
+          className="product-img"
+          loading="lazy"
+        />
+        {listing.sold && (
+          <div className="sold-overlay"><span>Sold</span></div>
+        )}
+
+        {/* Top-left: condition + sustainability badges */}
         <div className="product-badges">
           <span className={`badge ${conditionClass}`}>{listing.condition}</span>
+          {listing.plasticFree && (
+            <span className="badge badge-eco" title="Plastic-free packaging">
+              🌿 Eco
+            </span>
+          )}
         </div>
+
+        {/* Heart */}
         <button
           className={`fav-btn ${isFav ? "active" : ""}`}
           onClick={(e) => {
@@ -36,6 +52,7 @@ export default function ProductCard({ listing }) {
           <Heart size={16} fill={isFav ? "currentColor" : "none"} />
         </button>
       </Link>
+
       <div className="product-info">
         <div className="product-price-row">
           <span className="product-price">${listing.price.toLocaleString()}</span>
@@ -47,7 +64,7 @@ export default function ProductCard({ listing }) {
           <p className="product-title">{listing.title}</p>
         </Link>
         {seller && (
-          <Link to={`/profile`} className="product-seller">
+          <Link to="/profile" className="product-seller">
             <img src={seller.avatar} alt={seller.name} />
             <span>{seller.username}</span>
           </Link>

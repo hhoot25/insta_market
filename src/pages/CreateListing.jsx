@@ -20,40 +20,34 @@ export default function CreateListing() {
     description: "",
     category: "fashion",
     condition: "New",
+    plasticFree: false,
     images: [],
   });
   const [previews, setPreviews] = useState([]);
   const [errors, setErrors] = useState({});
 
   // AI suggestion state
-  const [aiState, setAiState] = useState("idle"); // idle | analyzing | done
+  const [aiState, setAiState] = useState("idle");
   const [suggestion, setSuggestion] = useState(null);
   const [appliedPrice, setAppliedPrice] = useState(false);
 
-  // Trigger AI analysis whenever category or condition changes
-  // and we have enough content to "analyze"
   useEffect(() => {
     const hasContent = form.title.trim().length > 2 || form.description.trim().length > 5 || previews.length > 0;
     if (!hasContent) return;
-
     setAiState("analyzing");
     setAppliedPrice(false);
     setSuggestion(null);
-
     const timer = setTimeout(() => {
       const result = getSuggestion(form.category, form.condition);
       setSuggestion(result);
       setAiState("done");
     }, 1400);
-
     return () => clearTimeout(timer);
   }, [form.category, form.condition]);
 
-  // Also trigger when user finishes typing title or description
   const handleChange = (field, value) => {
     setForm((f) => ({ ...f, [field]: value }));
     setErrors((e) => ({ ...e, [field]: null }));
-
     if ((field === "title" && value.trim().length === 3) ||
         (field === "description" && value.trim().length === 10)) {
       triggerAnalysis();
@@ -84,7 +78,6 @@ export default function CreateListing() {
       reader.onload = (ev) => {
         setPreviews((prev) => [...prev, ev.target.result]);
         setForm((f) => ({ ...f, images: [...f.images, ev.target.result] }));
-        // Trigger analysis when first image is uploaded
         if (previews.length === 0) triggerAnalysis();
       };
       reader.readAsDataURL(file);
@@ -108,7 +101,6 @@ export default function CreateListing() {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-
     addListing({
       ...form,
       price: Number(form.price),
@@ -118,7 +110,6 @@ export default function CreateListing() {
         : ["https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"],
       tags: form.title.toLowerCase().split(" ").filter((w) => w.length > 3),
     });
-
     setSuccess(true);
     setTimeout(() => navigate("/dashboard"), 2000);
   };
@@ -153,14 +144,7 @@ export default function CreateListing() {
               <p>Click to upload photos</p>
               <span>JPG, PNG up to 10MB each</span>
             </div>
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/*"
-              multiple
-              hidden
-              onChange={handleImageUpload}
-            />
+            <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={handleImageUpload} />
             {previews.length > 0 && (
               <div className="image-previews">
                 {previews.map((src, i) => (
@@ -196,9 +180,7 @@ export default function CreateListing() {
               <label className="form-label">
                 Price *
                 {appliedPrice && (
-                  <span className="ai-applied-tag">
-                    <Sparkles size={10} /> AI suggested
-                  </span>
+                  <span className="ai-applied-tag"><Sparkles size={10} /> AI suggested</span>
                 )}
               </label>
               <div className="price-input-wrap">
@@ -242,9 +224,7 @@ export default function CreateListing() {
                 onChange={(e) => handleChange("category", e.target.value)}
               >
                 {categories.filter((c) => c.id !== "all").map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.emoji} {cat.label}
-                  </option>
+                  <option key={cat.id} value={cat.id}>{cat.emoji} {cat.label}</option>
                 ))}
               </select>
             </div>
@@ -263,25 +243,45 @@ export default function CreateListing() {
               {errors.description && <span className="field-error">{errors.description}</span>}
               <span className="char-count">{form.description.length}/1000</span>
             </div>
+
+            {/* Plastic-free packaging toggle */}
+            <div className="form-group full-width">
+              <label className="plastic-free-toggle">
+                <div className="pf-toggle-left">
+                  <span className="pf-icon">🌿</span>
+                  <div>
+                    <p className="pf-label">Plastic-Free Packaging</p>
+                    <p className="pf-sub">I ship using recycled, compostable, or paper-based packaging only. No bubble wrap or plastic mailers.</p>
+                  </div>
+                </div>
+                <div
+                  className={`pf-switch ${form.plasticFree ? "on" : ""}`}
+                  onClick={() => setForm(f => ({ ...f, plasticFree: !f.plasticFree }))}
+                >
+                  <div className="pf-knob" />
+                </div>
+              </label>
+              {form.plasticFree && (
+                <p className="pf-enabled-note">
+                  🌿 A <strong>Plastic-Free Packaging</strong> badge will appear on your listing.
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="form-actions">
-            <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>
-              Cancel
-            </button>
+            <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>Cancel</button>
             <button type="submit" className="btn btn-primary">
               <Upload size={15} /> Publish Listing
             </button>
           </div>
         </form>
 
-        {/* ── AI Pricing Panel ── */}
+        {/* AI Pricing Panel */}
         <div className="ai-panel">
           <div className="ai-panel-header">
             <div className="ai-panel-title">
-              <div className="ai-icon-wrap">
-                <Sparkles size={15} />
-              </div>
+              <div className="ai-icon-wrap"><Sparkles size={15} /></div>
               <div>
                 <p className="ai-title-text">AI Price Advisor</p>
                 <p className="ai-title-sub">Powered by InstaMarket Intelligence</p>
@@ -294,14 +294,12 @@ export default function CreateListing() {
             )}
           </div>
 
-          {/* Idle — not enough info yet */}
           {aiState === "idle" && (
             <div className="ai-idle">
               <p>Fill in your title, description, category, and condition — the AI will analyze your listing and suggest the optimal price.</p>
             </div>
           )}
 
-          {/* Analyzing */}
           {aiState === "analyzing" && (
             <div className="ai-analyzing">
               <div className="ai-analyzing-dots">
@@ -316,56 +314,38 @@ export default function CreateListing() {
             </div>
           )}
 
-          {/* Result */}
           {aiState === "done" && suggestion && (
             <div className="ai-result fade-in">
-              {/* Confidence bar */}
               <div className="ai-confidence-row">
                 <span className="ai-confidence-label">Confidence</span>
                 <div className="ai-confidence-track">
-                  <div
-                    className="ai-confidence-fill"
-                    style={{ width: `${suggestion.confidence}%` }}
-                  />
+                  <div className="ai-confidence-fill" style={{ width: `${suggestion.confidence}%` }} />
                 </div>
                 <span className="ai-confidence-pct">{suggestion.confidence}%</span>
               </div>
-
-              {/* Suggested price */}
               <div className="ai-price-block">
                 <p className="ai-price-label">Suggested Price</p>
                 <p className="ai-price-value">${suggestion.price.toLocaleString()}</p>
-                <p className="ai-price-range">
-                  Market range: <strong>${suggestion.low}–${suggestion.high}</strong>
-                </p>
+                <p className="ai-price-range">Market range: <strong>${suggestion.low}–${suggestion.high}</strong></p>
               </div>
-
-              {/* Apply button */}
               <button
                 className={`ai-apply-btn ${appliedPrice ? "applied" : ""}`}
                 onClick={handleApplyPrice}
                 disabled={appliedPrice}
               >
-                {appliedPrice ? (
-                  <><CheckCircle2 size={14} /> Price Applied</>
-                ) : (
-                  <><ChevronRight size={14} /> Use This Price</>
-                )}
+                {appliedPrice
+                  ? <><CheckCircle2 size={14} /> Price Applied</>
+                  : <><ChevronRight size={14} /> Use This Price</>
+                }
               </button>
-
-              {/* Signals */}
               <div className="ai-signals">
                 <p className="ai-signals-label">Why this price?</p>
                 <ul className="ai-signals-list">
                   {suggestion.signals.map((s, i) => (
-                    <li key={i}>
-                      <TrendingUp size={11} />
-                      {s}
-                    </li>
+                    <li key={i}><TrendingUp size={11} />{s}</li>
                   ))}
                 </ul>
               </div>
-
               <p className="ai-disclaimer">
                 Suggestions are based on recent market activity and listing attributes. Final pricing is always up to you.
               </p>
