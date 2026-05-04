@@ -28,31 +28,31 @@ Demo accounts are available on the login screen. New signups must complete a CAP
 
 ## Marketplace (regular users)
 
-### Discover — `/`
+### Discover
 Searchable, filterable product grid. Filter by category (Fashion, Sneakers, Electronics, Jewelry, Home, Art, Vintage), sort by recency, popularity, or price, and search across titles, descriptions, and tags.
 
-### Product Detail — `/product/:id`
+### Product Detail
 Image carousel with thumbnails, condition badge, sustainability badge (if applicable), view and save counts, seller panel with rating and stats, and three action buttons: Buy Now, Add to Cart, and Message (non-functional placeholder).
 
-### Seller Hub — `/dashboard`
+### Seller Hub
 Two-tab dashboard for sellers.
 
 - **Analytics tab** — KPI cards (views, saves, revenue, orders), 7-day area chart for views and saves, bar chart for daily revenue, and a quick-stats row showing active listings, sold items, average price, and total saves.
 - **My Listings tab** — Responsive grid of all seller listings. Each card shows the cover photo, condition badge, title, price, and stats. Inline actions: Edit (opens a modal with live-editable fields), Mark as Sold, and Delete. An Add New Listing card at the end links to the create form.
 
-### Create Listing — `/create`
+### Create Listing
 Form with image upload preview, title, price, condition pill selector, category dropdown, description, and a plastic-free packaging toggle. Includes a mock **AI Price Advisor** panel that simulates ML analysis using hardcoded category and condition data to suggest an optimal price with a confidence score, market range, and contributing signals.
 
-### Cart & Checkout — `/cart`
+### Cart & Checkout
 Cart item list with order summary (subtotal, shipping, tax). Mock payment buttons for Apple Pay, Google Pay, and credit card — all show a success confirmation screen on click.
 
-### Wishlist — `/wishlist`
+### Wishlist
 Grid of hearted listings with prices, savings callouts, and Add to Cart actions. Total wishlist value shown in the header.
 
-### Profile — `/profile`
+### Profile
 Avatar, bio, rating, location, and stats. Two tabs: active listings and saved items.
 
-### Support — `/support`
+### Support
 Report form with reason dropdown, description field, and optional screenshot upload. Submitting shows a success state with a mock ticket number and an FAQ accordion below.
 
 ---
@@ -61,7 +61,7 @@ Report form with reason dropdown, description field, and optional screenshot upl
 
 Separate layout with its own sidebar and a confidential environment banner. No access to marketplace routes.
 
-### Fraud Detection — `/meta/fraud`
+### Fraud Detection
 KPI row, a 7-day area chart of flagged vs resolved signals, and a pie chart of fraud by category. Below the charts, each flagged listing appears as a row with four columns:
 
 1. **Listing photo** — thumbnail pulled from the actual listing, with a direct link to the product page
@@ -71,7 +71,7 @@ KPI row, a 7-day area chart of flagged vs resolved signals, and a pie chart of f
 
 Rows are filterable by status and risk level and searchable by flag ID, seller, or fraud type.
 
-### User Complaints — `/meta/complaints`
+### User Complaints
 Split-panel layout. Left panel is a scrollable complaint list with priority badge, status, category, and amount. Clicking a complaint loads the full detail view: complainant info, seller info, listing, amount, user statement, evidence files, and an internal agent reply thread. Active complaints have a reply box and Resolve / Dismiss buttons.
 
 ---
@@ -99,51 +99,10 @@ Split-panel layout. Left panel is a scrollable complaint list with priority badg
 
 ---
 
-## Project Structure
-
-```
-src/
-├── main.jsx
-├── App.jsx                         # AuthGate + routing root
-├── index.css                       # Global design tokens & utilities
-│
-├── context/
-│   ├── AppContext.jsx               # Cart, wishlist, listings state
-│   └── AuthContext.jsx             # Login, signup, TOS, logout
-│
-├── data/
-│   ├── mockData.js                 # Users, listings, categories, analytics
-│   └── aiPricingSuggestions.js     # Hardcoded AI pricing data by category/condition
-│
-├── components/
-│   ├── Navbar.jsx / .css           # Sidebar (desktop), bottom bar (mobile)
-│   ├── MetaLayout.jsx / .css       # Meta employee shell + sidebar
-│   ├── ProductCard.jsx / .css      # Listing card with heart toggle + eco badge
-│   ├── KPIBox.jsx / .css           # Metric card
-│   └── SellerPanel.jsx / .css      # Seller info block
-│
-└── pages/
-    ├── Login.jsx / .css            # Auth screen with login/signup tabs, CAPTCHA
-    ├── TOS.jsx / .css              # Buyer Terms of Service (signup flow only)
-    ├── Home.jsx / .css             # Discover feed
-    ├── ProductDetail.jsx / .css    # Single listing page
-    ├── Dashboard.jsx / .css        # Seller hub (analytics + listings grid)
-    ├── CreateListing.jsx / .css    # New listing form + AI price advisor
-    ├── Cart.jsx / .css             # Cart + mock checkout
-    ├── Wishlist.jsx / .css         # Saved listings
-    ├── Profile.jsx / .css          # User profile
-    ├── Support.jsx / .css          # Report / support form
-    ├── FraudDashboard.jsx / .css   # Meta: fraud detection
-    ├── ComplaintsDashboard.jsx     # Meta: user complaints
-    └── MetaPortal.css              # Shared Meta portal styles
-```
-
----
-
 ## Notes
 
 - All state is in-memory. Refreshing the page resets everything.
-- The logged-in seller is `u1` (Sofia Chen) by default.
-- Fraud flags in the Meta portal reference real listing IDs from `mockData.js`, so listing photos and titles match what buyers see in the marketplace.
-- The AI pricing advisor uses `aiPricingSuggestions.js` — prices are hardcoded per category and condition but presented with a simulated analysis delay to demonstrate the intended UX.
-- Plastic-free packaging is a seller-declared field. Listings with `plasticFree: true` show a 🌿 badge on the product card and detail page.
+- The logged-in seller is Sofia Chen by default.
+- Fraud flags in the Meta portal reference real listing IDs from the mock data, so listing photos and titles match what buyers see in the marketplace.
+- The AI pricing advisor uses hardcoded prices per category and condition presented with a simulated analysis delay to demonstrate the intended UX.
+- Plastic-free packaging is a seller-declared field. Listings flagged as plastic-free show a 🌿 badge on the product card and detail page.
