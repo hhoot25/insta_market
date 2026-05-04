@@ -76,17 +76,6 @@ Split-panel layout. Left panel is a scrollable complaint list with priority badg
 
 ---
 
-## Implementation Overview
-
-- Agile methodology with sprint phases covering requirements, design, development, testing, and validation — chosen over Waterfall due to the UI-heavy nature of the product and the need for frequent stakeholder and user feedback
-- Tech stack: React (frontend), Node.js (backend), Amazon API Gateway (request routing), PostgreSQL (database), AWS (hosting), and Docker (containerization) — each selected for scalability, reliability, and ability to handle high traffic loads
-- Three environments: local development via VS Code and `npm run dev`, a shared staging URL on the developer branch for QA and stakeholder sign-off, and a production environment on the main branch for live users
-- GitHub manages version control and CI/CD with a two-branch strategy — `main` for production and `developer` for active work — where all pull and push requests require approval before merging
-- Features are built independently as isolated components and integrated one at a time, allowing thorough testing and incremental stakeholder demos before inclusion in the product
-- Shared application data lives in a central state layer, the buyer marketplace and Meta employee portal are kept structurally separate, and all API interactions are abstracted through a dedicated service layer so the frontend never calls the backend directly
-
----
-
 ## Tech Stack
 
 - **React 18** + Vite
