@@ -157,7 +157,6 @@ export default function Login() {
     setSignupError("");
     if (!signupName.trim())                    { setSignupError("Please enter your full name."); return; }
     if (!signupEmail.trim())                   { setSignupError("Please enter your email address."); return; }
-    if (!isValidEmail(signupEmail.trim()))     { setSignupError("Account not created."); return; }
     if (signupPassword.length < MIN_PASSWORD)  { setSignupError(`Password must be at least ${MIN_PASSWORD} characters.`); return; }
     if (signupPassword !== signupConfirm)      { setSignupError("Passwords do not match."); return; }
     if (!captchaOk)                            { setSignupError("Please complete the CAPTCHA verification."); return; }
