@@ -1,13 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import "./Login.css";
 
-// ── Mock CAPTCHA challenge ─────────────────────────────────────────────────
-// Generates a simple math or word problem the user must solve.
+// ── Mock CAPTCHA ───────────────────────────────────────────────────────────
 function generateChallenge() {
   const types = ["math", "math", "word"];
   const type = types[Math.floor(Math.random() * types.length)];
-
   if (type === "math") {
     const a = Math.floor(Math.random() * 12) + 2;
     const b = Math.floor(Math.random() * 12) + 2;
@@ -17,13 +15,8 @@ function generateChallenge() {
       { symbol: "−", answer: a - b },
     ];
     const op = ops[Math.floor(Math.random() * ops.length)];
-    return {
-      question: `What is ${a} ${op.symbol} ${b}?`,
-      answer: String(op.answer),
-    };
+    return { question: `What is ${a} ${op.symbol} ${b}?`, answer: String(op.answer) };
   }
-
-  // Word challenge
   const words = [
     { question: 'Type the word "marketplace" to continue', answer: "marketplace" },
     { question: 'Type the word "secure" to continue',      answer: "secure"      },
@@ -34,19 +27,18 @@ function generateChallenge() {
 }
 
 function CaptchaBox({ onVerified }) {
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked]           = useState(false);
   const [showChallenge, setShowChallenge] = useState(false);
-  const [challenge, setChallenge] = useState(null);
-  const [input, setInput] = useState("");
-  const [error, setError] = useState("");
-  const [verified, setVerified] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [challenge, setChallenge]       = useState(null);
+  const [input, setInput]               = useState("");
+  const [error, setError]               = useState("");
+  const [verified, setVerified]         = useState(false);
+  const [loading, setLoading]           = useState(false);
 
   const handleCheck = () => {
     if (verified) return;
     setChecked(true);
     setLoading(true);
-    // Simulate analysis delay before showing challenge
     setTimeout(() => {
       setLoading(false);
       setChallenge(generateChallenge());
@@ -54,39 +46,23 @@ function CaptchaBox({ onVerified }) {
     }, 900);
   };
 
-  const handleSubmitChallenge = () => {
+  const handleSubmit = () => {
     const correct = input.trim().toLowerCase() === challenge.answer.toString().toLowerCase();
     if (correct) {
-      setError("");
-      setShowChallenge(false);
-      setVerified(true);
-      onVerified(true);
+      setError(""); setShowChallenge(false); setVerified(true); onVerified(true);
     } else {
-      setError("Incorrect — try again.");
-      setInput("");
-      // Regenerate challenge
-      setChallenge(generateChallenge());
+      setError("Incorrect — try again."); setInput(""); setChallenge(generateChallenge());
     }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") handleSubmitChallenge();
   };
 
   return (
     <div className="captcha-wrap">
       <div className={`captcha-box ${verified ? "captcha-done" : ""}`} onClick={handleCheck}>
         <div className="captcha-left">
-          {loading ? (
-            <div className="captcha-spinner" />
-          ) : verified ? (
-            <div className="captcha-checkmark">✓</div>
-          ) : (
-            <div className={`captcha-checkbox ${checked ? "checked" : ""}`} />
-          )}
-          <span className="captcha-label">
-            {verified ? "Verified" : "I'm not a robot"}
-          </span>
+          {loading   ? <div className="captcha-spinner" />
+           : verified ? <div className="captcha-checkmark">✓</div>
+           :            <div className={`captcha-checkbox ${checked ? "checked" : ""}`} />}
+          <span className="captcha-label">{verified ? "Verified" : "I'm not a robot"}</span>
         </div>
         <div className="captcha-logo">
           <div className="captcha-logo-icon">
@@ -100,7 +76,6 @@ function CaptchaBox({ onVerified }) {
           <span className="captcha-logo-sub">Privacy · Terms</span>
         </div>
       </div>
-
       {showChallenge && (
         <div className="captcha-challenge">
           <p className="captcha-challenge-q">{challenge.question}</p>
@@ -111,12 +86,10 @@ function CaptchaBox({ onVerified }) {
               placeholder="Your answer"
               value={input}
               onChange={e => { setInput(e.target.value); setError(""); }}
-              onKeyDown={handleKeyDown}
+              onKeyDown={e => e.key === "Enter" && handleSubmit()}
               autoFocus
             />
-            <button className="captcha-verify-btn" onClick={handleSubmitChallenge}>
-              Verify
-            </button>
+            <button className="captcha-verify-btn" onClick={handleSubmit}>Verify</button>
           </div>
           {error && <p className="captcha-error">{error}</p>}
         </div>
@@ -125,18 +98,18 @@ function CaptchaBox({ onVerified }) {
   );
 }
 
-// ── Main Login component ───────────────────────────────────────────────────
+// ── Main Login ─────────────────────────────────────────────────────────────
+const MIN_PASSWORD = 10;
+
 export default function Login() {
   const { login, signup } = useAuth();
   const [mode, setMode] = useState("login");
 
-  // Login fields
   const [loginEmail,    setLoginEmail]    = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError,    setLoginError]    = useState("");
   const [loginLoading,  setLoginLoading]  = useState(false);
 
-  // Signup fields
   const [signupName,     setSignupName]     = useState("");
   const [signupEmail,    setSignupEmail]    = useState("");
   const [signupPassword, setSignupPassword] = useState("");
@@ -145,30 +118,32 @@ export default function Login() {
   const [signupLoading,  setSignupLoading]  = useState(false);
   const [captchaOk,      setCaptchaOk]      = useState(false);
 
-  const MIN_PASSWORD = 10;
-
-  // Password strength indicator
   const passwordStrength = (pwd) => {
     if (!pwd) return null;
-    if (pwd.length < MIN_PASSWORD)  return { label: "Too short", color: "#ed4956", pct: 20 };
-    if (pwd.length < 12)             return { label: "Weak",      color: "#fcb045", pct: 45 };
-    const hasUpper   = /[A-Z]/.test(pwd);
-    const hasNum     = /[0-9]/.test(pwd);
-    const hasSpecial = /[^A-Za-z0-9]/.test(pwd);
-    const score = [hasUpper, hasNum, hasSpecial].filter(Boolean).length;
+    if (pwd.length < MIN_PASSWORD) return { label: "Too short", color: "#ed4956", pct: 20 };
+    if (pwd.length < 12)           return { label: "Weak",      color: "#fcb045", pct: 45 };
+    const score = [/[A-Z]/.test(pwd), /[0-9]/.test(pwd), /[^A-Za-z0-9]/.test(pwd)].filter(Boolean).length;
     if (score === 3) return { label: "Strong", color: "#00ba7c", pct: 100 };
     if (score === 2) return { label: "Good",   color: "#00ba7c", pct: 75  };
     return              { label: "Fair",   color: "#fcb045", pct: 60  };
   };
-
   const strength = passwordStrength(signupPassword);
 
-  // ── Login submit ──
+  // Validate that email starts with "abc123@" (case-insensitive) for regular accounts
+  const isValidEmail = (email) =>
+    email.toLowerCase().startsWith("abc123@") && email.includes("@") && email.split("@")[1].length > 0;
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoginError("");
     if (!loginEmail.trim() || !loginPassword.trim()) {
       setLoginError("Please enter your email and password.");
+      return;
+    }
+    // Meta employees bypass the abc123 check
+    const isMeta = loginEmail.toLowerCase().endsWith("@meta.com");
+    if (!isValidEmail(loginEmail.trim())) {
+      setLoginError("Account not created.");
       return;
     }
     setLoginLoading(true);
@@ -177,49 +152,32 @@ export default function Login() {
     setLoginLoading(false);
   };
 
-  // ── Signup submit ──
   const handleSignup = async (e) => {
     e.preventDefault();
     setSignupError("");
-    if (!signupName.trim()) {
-      setSignupError("Please enter your full name.");
-      return;
-    }
-    if (!signupEmail.trim()) {
-      setSignupError("Please enter your email address.");
-      return;
-    }
-    if (signupPassword.length < MIN_PASSWORD) {
-      setSignupError(`Password must be at least ${MIN_PASSWORD} characters.`);
-      return;
-    }
-    if (signupPassword !== signupConfirm) {
-      setSignupError("Passwords do not match.");
-      return;
-    }
-    if (!captchaOk) {
-      setSignupError("Please complete the CAPTCHA verification.");
-      return;
-    }
+    if (!signupName.trim())                    { setSignupError("Please enter your full name."); return; }
+    if (!signupEmail.trim())                   { setSignupError("Please enter your email address."); return; }
+    if (!isValidEmail(signupEmail.trim()))     { setSignupError("Account not created."); return; }
+    if (signupPassword.length < MIN_PASSWORD)  { setSignupError(`Password must be at least ${MIN_PASSWORD} characters.`); return; }
+    if (signupPassword !== signupConfirm)      { setSignupError("Passwords do not match."); return; }
+    if (!captchaOk)                            { setSignupError("Please complete the CAPTCHA verification."); return; }
     setSignupLoading(true);
     await new Promise(r => setTimeout(r, 900));
     signup(signupName, signupEmail.trim(), signupPassword);
     setSignupLoading(false);
   };
 
+  // Demo buyer uses a valid abc123@ email; Meta demo unchanged
   const demoLogin = (email) => login(email, "demo1234");
 
   const switchMode = (m) => {
-    setMode(m);
-    setLoginError("");
-    setSignupError("");
-    setCaptchaOk(false);
+    setMode(m); setLoginError(""); setSignupError(""); setCaptchaOk(false);
   };
 
   return (
     <div className="login-root">
 
-      {/* Left brand panel */}
+      {/* Brand panel */}
       <div className="login-brand">
         <div className="brand-inner">
           <div className="brand-logo-wrap">
@@ -241,11 +199,10 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Right form panel */}
+      {/* Form panel */}
       <div className="login-panel">
         <div className="login-box">
 
-          {/* Logo */}
           <div className="login-logo">
             <svg viewBox="0 0 24 24" width="48" height="48">
               <defs>
@@ -262,13 +219,12 @@ export default function Login() {
             <span>InstaMarket</span>
           </div>
 
-          {/* Mode tabs */}
           <div className="auth-tabs">
             <button className={`auth-tab ${mode === "login"  ? "active" : ""}`} onClick={() => switchMode("login")}>Log In</button>
             <button className={`auth-tab ${mode === "signup" ? "active" : ""}`} onClick={() => switchMode("signup")}>Sign Up</button>
           </div>
 
-          {/* ── LOGIN FORM ── */}
+          {/* ── LOGIN ── */}
           {mode === "login" && (
             <form className="auth-form" onSubmit={handleLogin}>
               <input className="ig-input" type="email"    placeholder="Email"    value={loginEmail}    onChange={e => setLoginEmail(e.target.value)}    autoComplete="email" />
@@ -281,14 +237,12 @@ export default function Login() {
             </form>
           )}
 
-          {/* ── SIGNUP FORM ── */}
+          {/* ── SIGNUP ── */}
           {mode === "signup" && (
             <form className="auth-form" onSubmit={handleSignup}>
-              <input className="ig-input" type="text"     placeholder="Full Name"                    value={signupName}     onChange={e => setSignupName(e.target.value)}     autoComplete="name" />
-              <input className="ig-input" type="email"    placeholder="Email"                        value={signupEmail}    onChange={e => setSignupEmail(e.target.value)}    autoComplete="email" />
-              <input className="ig-input" type="password" placeholder={`Password (min. ${MIN_PASSWORD} characters)`} value={signupPassword} onChange={e => setSignupPassword(e.target.value)} autoComplete="new-password" />
-
-              {/* Password strength bar */}
+              <input className="ig-input" type="text"     placeholder="Full Name"                              value={signupName}     onChange={e => setSignupName(e.target.value)}     autoComplete="name" />
+              <input className="ig-input" type="email"    placeholder="Email"                                  value={signupEmail}    onChange={e => setSignupEmail(e.target.value)}    autoComplete="email" />
+              <input className="ig-input" type="password" placeholder={`Password (min. ${MIN_PASSWORD} chars)`} value={signupPassword} onChange={e => setSignupPassword(e.target.value)} autoComplete="new-password" />
               {signupPassword && strength && (
                 <div className="pw-strength">
                   <div className="pw-strength-track">
@@ -297,33 +251,27 @@ export default function Login() {
                   <span className="pw-strength-label" style={{ color: strength.color }}>{strength.label}</span>
                 </div>
               )}
-
               <input className="ig-input" type="password" placeholder="Confirm Password" value={signupConfirm} onChange={e => setSignupConfirm(e.target.value)} autoComplete="new-password" />
-
-              {/* CAPTCHA */}
               <CaptchaBox onVerified={setCaptchaOk} />
-
               {signupError && <p className="auth-error">{signupError}</p>}
-
               <button type="submit" className="auth-submit-btn" disabled={signupLoading || !captchaOk}>
                 {signupLoading ? <span className="spinner" /> : "Create Account"}
               </button>
-
               <p className="signup-tos-notice">
                 By signing up you'll be asked to review and accept our Terms of Service.
               </p>
             </form>
           )}
 
-          {/* Demo logins (login tab only) */}
+          {/* Demo logins */}
           {mode === "login" && (
             <>
               <div className="login-divider"><span>OR</span></div>
               <div className="demo-logins">
                 <p className="demo-label">Try a demo account</p>
-                <button className="demo-btn" onClick={() => demoLogin("sofia@shoppers.com")}>
+                <button className="demo-btn" onClick={() => demoLogin("abc123@shoppers.com")}>
                   <span className="demo-icon">🛍️</span>
-                  <span><strong>Buyer / Seller</strong><small>sofia@shoppers.com</small></span>
+                  <span><strong>Buyer / Seller</strong><small>abc123@shoppers.com</small></span>
                 </button>
                 <button className="demo-btn meta" onClick={() => demoLogin("trust.safety@meta.com")}>
                   <span className="demo-icon">🔒</span>
@@ -335,13 +283,11 @@ export default function Login() {
           )}
         </div>
 
-        {/* Bottom switch */}
         <div className="login-footer-box">
-          {mode === "login" ? (
-            <>Don't have an account? <button className="text-link" onClick={() => switchMode("signup")}>Sign up</button></>
-          ) : (
-            <>Already have an account? <button className="text-link" onClick={() => switchMode("login")}>Log in</button></>
-          )}
+          {mode === "login"
+            ? <>Don't have an account? <button className="text-link" onClick={() => switchMode("signup")}>Sign up</button></>
+            : <>Already have an account? <button className="text-link" onClick={() => switchMode("login")}>Log in</button></>
+          }
         </div>
 
         <p className="login-footer-note">© 2025 InstaMarket · from Meta</p>
