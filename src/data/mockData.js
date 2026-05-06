@@ -55,6 +55,23 @@ export const users = [
     followers: 2100,
     sales: 67,
   },
+<<<<<<< HEAD
+=======
+  {
+    id: "u5",
+    name: "John Cole",
+    username: "@johnyboy",
+    avatar: "https://api.dicebear.com/7.x/personas/svg?seed=john",
+    rating: 3.1,
+    reviews: 28,
+    verified: false,
+    joined: "Oct 2027",
+    location: "Austin, TX",
+    bio: "Tech gadgets, bananas, weird stuff.",
+    followers: 3821,
+    sales: 9,
+  },
+>>>>>>> aad64f5 (Expand list of people)
 ];
 
 export const fallbackListingImage =
